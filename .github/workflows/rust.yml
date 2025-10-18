@@ -1,10 +1,7 @@
 name: Rust
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 env:
   CARGO_TERM_COLOR: always
@@ -16,11 +13,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Build
+    - name: Build Release
       run: cargo build --release --verbose
-    - name: Upload Release Asset
-      uses: softprops/action-gh-release@v1
+    - name: Upload Release Artifact
+      uses: actions/upload-artifact@v4
       with:
-        files: target/release/chisel
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: chisel-release
+        path: target/release/chisel
+        retention-days: 30
